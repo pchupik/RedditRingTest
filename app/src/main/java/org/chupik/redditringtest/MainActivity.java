@@ -3,10 +3,10 @@ package org.chupik.redditringtest;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -16,7 +16,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.UUID;
 
 import okhttp3.Call;
@@ -30,12 +29,18 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     private final String APPLICATION_ID = "zz7sp9sNJkMwMA";
+    private SwipeRefreshLayout swipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        swipe = findViewById(R.id.swipe_refresh);
+        swipe.setOnRefreshListener(this::loadData);
+        loadData();
+    }
 
+    private void loadData() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .build();
 
@@ -100,12 +105,7 @@ public class MainActivity extends AppCompatActivity {
                                     .apply();
 
 
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(MainActivity.this, accessToken, Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                            runOnUiThread(() -> Toast.makeText(MainActivity.this, accessToken, Toast.LENGTH_SHORT).show());
                             requestData(okHttpClient, accessToken);
 
                         } catch (JSONException e) {
@@ -176,13 +176,11 @@ public class MainActivity extends AppCompatActivity {
                                 }
 
 
-                                final PostsAdapter adapter = new PostsAdapter(posts);
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        RecyclerView list = findViewById(R.id.list);
-                                        list.setAdapter(adapter);
-                                    }
+                                final PostsAdapter postsAdapter = new PostsAdapter(posts);
+                                runOnUiThread(() -> {
+                                    RecyclerView list = findViewById(R.id.list);
+                                    list.setAdapter(postsAdapter);
+                                    swipe.setRefreshing(false);
                                 });
 
                             }
