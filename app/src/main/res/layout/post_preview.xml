@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    app:cardUseCompatPadding="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+<RelativeLayout
+    android:padding="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/thumbnail"
+        tools:src="@drawable/ic_launcher_background"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:padding="2dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        />
+    <TextView
+        android:id="@+id/title"
+        android:padding="2dp"
+        tools:text="This is Shelia Fredrick, a flight attendant. She noticed a terrified girl accompanied by an older man. She left a note in the bathroom on which the victim wrote that she needed help. The police was alerted  the girl was saved from a human trafficker. We should honor our heroes."
+        android:gravity="center_vertical"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="64dp" />
+
+    <TextView
+        android:id="@+id/comments"
+        android:padding="2dp"
+        tools:text="12345"
+        android:drawableLeft="@drawable/ic_comment_black_24dp"
+        android:layout_below="@+id/title"
+        android:layout_alignParentStart="@+id/title"
+        android:minEms="5"
+        android:maxEms="5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/author"
+        android:padding="2dp"
+        tools:text="author"
+        android:lines="1"
+        android:drawableLeft="@drawable/ic_person_outline_black_24dp"
+        android:layout_below="@+id/title"
+        android:layout_toEndOf="@+id/comments"
+        android:layout_toStartOf="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/date"
+        android:padding="2dp"
+        tools:text="date"
+        android:layout_below="@+id/title"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>
+</android.support.v7.widget.CardView>
