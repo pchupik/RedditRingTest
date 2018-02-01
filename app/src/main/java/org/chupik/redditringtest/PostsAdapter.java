@@ -1,11 +1,13 @@
 package org.chupik.redditringtest;
 
+import android.arch.paging.PagedListAdapter;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.v7.recyclerview.extensions.DiffCallback;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +16,13 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.Objects;
 
 
-public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
+public class PostsAdapter extends PagedListAdapter<Post, PostsAdapter.ViewHolder> {
 
-    private ArrayList<Post> posts;
-
-    public PostsAdapter(ArrayList<Post> posts) {
-        this.posts = posts;
+    protected PostsAdapter() {
+        super(new PostComparator());
     }
 
     @Override
@@ -34,12 +34,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.setData(posts.get(position));
-    }
-
-    @Override
-    public int getItemCount() {
-        return posts.size();
+        holder.setData(getItem(position));
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -53,23 +48,20 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         private String imageUrl;
 
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             thumbnail = itemView.findViewById(R.id.thumbnail);
             author = itemView.findViewById(R.id.author);
             comments = itemView.findViewById(R.id.comments);
             date = itemView.findViewById(R.id.date);
-            thumbnail.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (imageUrl != null && imageUrl.startsWith("http")) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(imageUrl));
-                        try {
-                            v.getContext().startActivity(intent);
-                        } catch (ActivityNotFoundException e) {
+            thumbnail.setOnClickListener(v -> {
+                if (imageUrl != null && imageUrl.startsWith("http")) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(imageUrl));
+                    try {
+                        v.getContext().startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
 
-                        }
                     }
                 }
             });
@@ -87,10 +79,21 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                         .into(thumbnail);
             } else {
                 thumbnail.setVisibility(View.GONE);
-                Log.d("thumbnail", post.thumbnail);
-//                thumbnail.setImageResource(R.drawable.ic_launcher_background);
             }
             imageUrl = post.fullImage;
+        }
+    }
+
+    public static class PostComparator extends DiffCallback<Post>{
+
+        @Override
+        public boolean areItemsTheSame(@NonNull Post oldItem, @NonNull Post newItem) {
+            return oldItem.name.equals(newItem.name);
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Post oldItem, @NonNull Post newItem) {
+            return Objects.deepEquals(oldItem, newItem);
         }
     }
 }

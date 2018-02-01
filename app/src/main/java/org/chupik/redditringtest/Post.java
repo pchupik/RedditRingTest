@@ -1,5 +1,7 @@
 package org.chupik.redditringtest;
 
+import android.support.annotation.Nullable;
+
 public class Post {
 
     String name;
@@ -7,10 +9,11 @@ public class Post {
     String author;
     long date;
     String thumbnail;
+    @Nullable
     String fullImage;
     long commentsNumber;
 
-    public Post(String name, String title, String author, long date, String thumbnail, String fullImage, long commentsNumber) {
+    public Post(String name, String title, String author, long date, String thumbnail, @Nullable String fullImage, long commentsNumber) {
         this.name = name;
         this.title = title;
         this.author = author;
