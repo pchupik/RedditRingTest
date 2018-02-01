@@ -7,12 +7,12 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 
-public class TopDataSource extends ItemKeyedDataSource<String, Post> {
+public class PostsDataSource extends ItemKeyedDataSource<String, Post> {
 
     private RedditApi reddit;
     public MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
 
-    public TopDataSource(RedditApi reddit) {
+    public PostsDataSource(RedditApi reddit) {
         this.reddit = reddit;
     }
 

@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MyViewModel viewModel = ViewModelProviders.of(this, new ViewModelFactory()).get(MyViewModel.class);
+        PostViewModel viewModel = ViewModelProviders.of(this, new ViewModelFactory()).get(PostViewModel.class);
 
         PostsAdapter adapter = new PostsAdapter();
         viewModel.posts.observe(this, adapter::setList);
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         @NonNull
         @Override
         public ViewModel create(@NonNull Class modelClass) {
-            return new MyViewModel(new RedditApi(new Prefs(MainActivity.this)));
+            return new PostViewModel(new RedditApi(new Prefs(MainActivity.this)));
         }
     }
 }

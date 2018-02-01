@@ -6,7 +6,7 @@ import android.arch.paging.DataSource;
 public class PostsDataSourceFactory implements DataSource.Factory<String, Post> {
 
     RedditApi api;
-    MutableLiveData<TopDataSource> sourceMutableLiveData = new MutableLiveData<>();
+    MutableLiveData<PostsDataSource> sourceMutableLiveData = new MutableLiveData<>();
 
     public PostsDataSourceFactory(RedditApi api) {
         this.api = api;
@@ -14,13 +14,13 @@ public class PostsDataSourceFactory implements DataSource.Factory<String, Post> 
 
     @Override
     public DataSource<String, Post> create() {
-        TopDataSource dataSource = new TopDataSource(api);
+        PostsDataSource dataSource = new PostsDataSource(api);
         sourceMutableLiveData.postValue(dataSource);
         return dataSource;
     }
 
     public void refresh(){
-        TopDataSource dataSource = sourceMutableLiveData.getValue();
+        PostsDataSource dataSource = sourceMutableLiveData.getValue();
         if (dataSource != null)
             dataSource.invalidate();
     }

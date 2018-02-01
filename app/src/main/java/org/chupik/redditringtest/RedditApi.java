@@ -22,7 +22,7 @@ import okhttp3.Response;
 public class RedditApi {
 
     private final String APPLICATION_ID = "zz7sp9sNJkMwMA";
-    private final String USER_AGENT = "android:org.chupik.redditringtest:v1.0 (by /u/pchupik)";
+    private final String USER_AGENT = "android:" + BuildConfig.APPLICATION_ID + ":v" + BuildConfig.VERSION_NAME + " (by /u/pchupik)";
 
     private String accessToken;
     private long expiresAt;

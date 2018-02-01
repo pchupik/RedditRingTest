@@ -7,14 +7,14 @@ import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
 
 
-public class MyViewModel extends ViewModel {
+public class PostViewModel extends ViewModel {
 
     private static final int PAGE_SIZE = 10;
     public final LiveData<PagedList<Post>> posts;
     private final PostsDataSourceFactory postsDataSourceFactory;
     public final LiveData<Boolean> isRefreshing;
 
-    public MyViewModel(RedditApi api) {
+    public PostViewModel(RedditApi api) {
         postsDataSourceFactory = new PostsDataSourceFactory(api);
         isRefreshing = Transformations.switchMap(postsDataSourceFactory.sourceMutableLiveData, __ -> __.isLoading);
 
