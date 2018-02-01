@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -55,16 +56,8 @@ public class PostsAdapter extends PagedListAdapter<Post, PostsAdapter.ViewHolder
             author = itemView.findViewById(R.id.author);
             comments = itemView.findViewById(R.id.comments);
             date = itemView.findViewById(R.id.date);
-            thumbnail.setOnClickListener(v -> {
-                if (imageUrl != null && imageUrl.startsWith("http")) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(imageUrl));
-                    try {
-                        v.getContext().startActivity(intent);
-                    } catch (ActivityNotFoundException e) {
-
-                    }
-                }
-            });
+            thumbnail.setOnClickListener(v -> openUrl(imageUrl, v));
+            title.setOnClickListener(v -> openUrl(url, v));
         }
 
         public void setData(Post post){
@@ -81,6 +74,7 @@ public class PostsAdapter extends PagedListAdapter<Post, PostsAdapter.ViewHolder
                 thumbnail.setVisibility(View.GONE);
             }
             imageUrl = post.fullImage;
+            url = post.permalink;
         }
     }
 
@@ -94,6 +88,17 @@ public class PostsAdapter extends PagedListAdapter<Post, PostsAdapter.ViewHolder
         @Override
         public boolean areContentsTheSame(@NonNull Post oldItem, @NonNull Post newItem) {
             return Objects.deepEquals(oldItem, newItem);
+        }
+    }
+
+    private static void openUrl(String url, View v){
+        if (url != null && url.startsWith("http")) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            try {
+                v.getContext().startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(v.getContext(), R.string.unable_to_open_url, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

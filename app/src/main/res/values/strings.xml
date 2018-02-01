@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RedditRingTest</string>
+    <string name="unable_to_open_url">Unable to open url</string>
 </resources>

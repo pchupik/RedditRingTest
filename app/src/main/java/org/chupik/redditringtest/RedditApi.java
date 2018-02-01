@@ -117,23 +117,25 @@ public class RedditApi {
         JSONObject data = jsonObject.optJSONObject("data");
         if (data != null) {
             JSONArray children = data.optJSONArray("children");
+            if (children != null) {
+                for (int i = 0; i < children.length(); i++) {
+                    JSONObject jsonPost = children.getJSONObject(i);
+                    JSONObject postData = jsonPost.getJSONObject("data");
+                    String fullImage = parseFullImage(postData);
 
-            for (int i = 0; i < children.length(); i++) {
-                JSONObject jsonPost = children.getJSONObject(i);
-                JSONObject postData = jsonPost.getJSONObject("data");
-                String fullImage = parseFullImage(postData);
+                    Post post = new Post(
+                            postData.optString("name"),
+                            postData.optString("title"),
+                            postData.optString("author"),
+                            postData.optLong("created_utc") * 1000,
+                            postData.optString("thumbnail"),
+                            fullImage,
+                            postData.optLong("num_comments"),
+                            "https://www.reddit.com" + postData.optString("permalink")
+                    );
 
-                Post post = new Post(
-                        postData.optString("name"),
-                        postData.optString("title"),
-                        postData.optString("author"),
-                        postData.optLong("created_utc") * 1000,
-                        postData.optString("thumbnail"),
-                        fullImage,
-                        postData.optLong("num_comments")
-                );
-
-                posts.add(post);
+                    posts.add(post);
+                }
             }
         }
         return posts;

@@ -9,6 +9,7 @@ import android.arch.paging.PagedList;
 
 public class MyViewModel extends ViewModel {
 
+    private static final int PAGE_SIZE = 10;
     public final LiveData<PagedList<Post>> posts;
     private final PostsDataSourceFactory postsDataSourceFactory;
     public final LiveData<Boolean> isRefreshing;
@@ -17,7 +18,7 @@ public class MyViewModel extends ViewModel {
         postsDataSourceFactory = new PostsDataSourceFactory(api);
         isRefreshing = Transformations.switchMap(postsDataSourceFactory.sourceMutableLiveData, __ -> __.isLoading);
 
-        posts = new LivePagedListBuilder<>(postsDataSourceFactory, 50)
+        posts = new LivePagedListBuilder<>(postsDataSourceFactory, PAGE_SIZE)
                 .build();
     }
 
