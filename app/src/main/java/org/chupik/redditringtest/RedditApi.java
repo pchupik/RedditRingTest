@@ -13,12 +13,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import okhttp3.Credentials;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+@Singleton
 public class RedditApi {
 
     private final String APPLICATION_ID = "zz7sp9sNJkMwMA";
@@ -32,7 +36,7 @@ public class RedditApi {
 
     private Prefs prefs;
 
-
+    @Inject
     public RedditApi(Prefs prefs) {
         this.prefs = prefs;
         this.accessToken = prefs.getToken();

@@ -6,10 +6,13 @@ import android.preference.PreferenceManager;
 
 import java.util.UUID;
 
+import javax.inject.Inject;
+
 public class Prefs {
 
     private final SharedPreferences preferences;
 
+    @Inject
     public Prefs(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
     }

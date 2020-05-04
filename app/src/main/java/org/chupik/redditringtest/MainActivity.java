@@ -9,11 +9,17 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 
+import javax.inject.Inject;
+
 
 public class MainActivity extends AppCompatActivity {
 
+    @Inject RedditApi api;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ((MyApp)getApplication()).getAppComponent().inject(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -36,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         @NonNull
         @Override
         public ViewModel create(@NonNull Class modelClass) {
-            return new PostViewModel(new RedditApi(new Prefs(MainActivity.this)));
+            return new PostViewModel(api);
         }
     }
 }

@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 26
@@ -24,6 +27,10 @@ android {
 
 dependencies {
 
+    api 'com.google.dagger:dagger:2.27'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.27'
+    kapt 'com.google.dagger:dagger-compiler:2.27'
+
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation "com.android.support:cardview-v7:26.1.0"
     implementation 'com.android.support:recyclerview-v7:26.1.0'
@@ -37,4 +44,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
