@@ -1,12 +1,12 @@
 package org.chupik.redditringtest;
 
-import android.arch.paging.PagedListAdapter;
+import androidx.paging.PagedListAdapter;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.v7.recyclerview.extensions.DiffCallback;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,7 +78,7 @@ public class PostsAdapter extends PagedListAdapter<Post, PostsAdapter.ViewHolder
         }
     }
 
-    public static class PostComparator extends DiffCallback<Post>{
+    public static class PostComparator extends DiffUtil.ItemCallback<Post>{
 
         @Override
         public boolean areItemsTheSame(@NonNull Post oldItem, @NonNull Post newItem) {

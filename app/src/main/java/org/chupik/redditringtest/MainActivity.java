@@ -1,10 +1,10 @@
 package org.chupik.redditringtest;
 
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.chupik.redditringtest.di.MyApp;
 
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         PostsViewModel viewModel = ViewModelProviders.of(this, viewModelFactory).get(PostsViewModel.class);
 
         PostsAdapter adapter = new PostsAdapter();
-        viewModel.posts.observe(this, adapter::setList);
+        viewModel.posts.observe(this, adapter::submitList);
 
         RecyclerView recyclerView = findViewById(R.id.list);
         recyclerView.setAdapter(adapter);

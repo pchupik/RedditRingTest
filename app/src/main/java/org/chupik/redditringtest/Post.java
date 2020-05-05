@@ -1,6 +1,6 @@
 package org.chupik.redditringtest;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 public class Post {
 

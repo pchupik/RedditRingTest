@@ -1,8 +1,8 @@
 package org.chupik.redditringtest;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.ItemKeyedDataSource;
-import android.support.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.ItemKeyedDataSource;
+import androidx.annotation.NonNull;
 
 import java.util.List;
 
