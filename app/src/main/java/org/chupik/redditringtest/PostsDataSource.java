@@ -6,12 +6,15 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 
 public class PostsDataSource extends ItemKeyedDataSource<String, Post> {
 
     private RedditApi reddit;
     public MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
 
+    @Inject
     public PostsDataSource(RedditApi reddit) {
         this.reddit = reddit;
     }

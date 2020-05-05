@@ -3,11 +3,14 @@ package org.chupik.redditringtest;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.DataSource;
 
+import javax.inject.Inject;
+
 public class PostsDataSourceFactory implements DataSource.Factory<String, Post> {
 
     RedditApi api;
     MutableLiveData<PostsDataSource> sourceMutableLiveData = new MutableLiveData<>();
 
+    @Inject
     public PostsDataSourceFactory(RedditApi api) {
         this.api = api;
     }

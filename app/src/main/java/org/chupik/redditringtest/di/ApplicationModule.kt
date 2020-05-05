@@ -1,4 +1,4 @@
-package org.chupik.redditringtest
+package org.chupik.redditringtest.di
 
 import android.content.Context
 import dagger.Module
