@@ -61,14 +61,14 @@ public class PostsAdapter extends PagedListAdapter<Post, PostsAdapter.ViewHolder
         }
 
         public void setData(Post post){
-            title.setText(post.title);
-            author.setText(post.author);
-            comments.setText(post.commentsNumber + "");
+            title.setText(post.getTitle());
+            author.setText(post.getAuthor());
+            comments.setText(post.getCommentsNumber() + "");
             date.setText(DateUtils.getRelativeTimeSpanString(post.getDateInMiliseconds()));
-            if (post.thumbnail  != null && post.thumbnail.startsWith("http")) {
+            if (post.getThumbnail()  != null && post.getThumbnail().startsWith("http")) {
                 thumbnail.setVisibility(View.VISIBLE);
                 Picasso.with(thumbnail.getContext())
-                        .load(post.thumbnail)
+                        .load(post.getThumbnail())
                         .into(thumbnail);
             } else {
                 thumbnail.setVisibility(View.GONE);
@@ -82,7 +82,7 @@ public class PostsAdapter extends PagedListAdapter<Post, PostsAdapter.ViewHolder
 
         @Override
         public boolean areItemsTheSame(@NonNull Post oldItem, @NonNull Post newItem) {
-            return oldItem.name.equals(newItem.name);
+            return oldItem.getName().equals(newItem.getName());
         }
 
         @Override

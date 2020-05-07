@@ -40,6 +40,6 @@ public class PostsDataSource extends ItemKeyedDataSource<String, Post> {
     @NonNull
     @Override
     public String getKey(@NonNull Post item) {
-        return item.name;
+        return item.getName();
     }
 }
