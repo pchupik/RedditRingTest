@@ -64,7 +64,7 @@ public class PostsAdapter extends PagedListAdapter<Post, PostsAdapter.ViewHolder
             title.setText(post.title);
             author.setText(post.author);
             comments.setText(post.commentsNumber + "");
-            date.setText(DateUtils.getRelativeTimeSpanString(post.date));
+            date.setText(DateUtils.getRelativeTimeSpanString(post.getDateInMiliseconds()));
             if (post.thumbnail  != null && post.thumbnail.startsWith("http")) {
                 thumbnail.setVisibility(View.VISIBLE);
                 Picasso.with(thumbnail.getContext())
@@ -73,8 +73,8 @@ public class PostsAdapter extends PagedListAdapter<Post, PostsAdapter.ViewHolder
             } else {
                 thumbnail.setVisibility(View.GONE);
             }
-            imageUrl = post.fullImage;
-            url = post.permalink;
+            imageUrl = post.getFullImageIfEnabled();
+            url = post.getFullPermaLink();
         }
     }
 

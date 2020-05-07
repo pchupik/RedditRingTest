@@ -1,10 +1,8 @@
 package org.chupik.redditringtest;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,6 +19,9 @@ import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 @Singleton
 public class RedditApi {
@@ -35,6 +36,8 @@ public class RedditApi {
     private final OkHttpClient okHttpClient;
 
     private Prefs prefs;
+    private final Retrofit retrofit;
+    private final RedditService redditService;
 
     @Inject
     public RedditApi(Prefs prefs, OkHttpClient okHttpClient) {
@@ -43,6 +46,13 @@ public class RedditApi {
         this.expiresAt = prefs.getTokenExpirationDate();
         this.uuid = prefs.getUUID();
         this.okHttpClient = okHttpClient;
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://oauth.reddit.com/")
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        redditService = retrofit.create(RedditService.class);
     }
 
     private boolean isTokenValid(){
@@ -95,71 +105,16 @@ public class RedditApi {
         if (!isTokenValid())
             requestToken();
 
-        Request request = new Request.Builder()
-                .url("https://oauth.reddit.com/top?limit="+limit + ((after != null)? "&after="+after : ""))
-                .header("User-Agent", USER_AGENT)
-                .header("Authorization", "bearer "+ accessToken)
-                .build();
+        Call<Top> posts = redditService.posts(limit, after, USER_AGENT, "bearer " + accessToken);
         try {
-            Response response = okHttpClient.newCall(request).execute();
-            String string = response.body().string();
-            return parsePostsList(string);
-
-        } catch (IOException | JSONException e) {
+            retrofit2.Response<Top> response = posts.execute();
+            Top top = response.body();
+            List<Post> list = top.getPosts();
+            return list;
+        } catch (IOException e) {
             Log.e("RedditApi", "requestData", e);
         }
         return new ArrayList<>();
     }
 
-    private static List<Post> parsePostsList(String string) throws JSONException {
-        ArrayList<Post> posts = new ArrayList<>();
-        JSONObject jsonObject = new JSONObject(string);
-        int error = jsonObject.optInt("error");
-        if (error != 0) {
-            Log.e("RedditApi", error + " " + jsonObject.optString("message"));
-        }
-        JSONObject data = jsonObject.optJSONObject("data");
-        if (data != null) {
-            JSONArray children = data.optJSONArray("children");
-            if (children != null) {
-                for (int i = 0; i < children.length(); i++) {
-                    JSONObject jsonPost = children.getJSONObject(i);
-                    JSONObject postData = jsonPost.getJSONObject("data");
-                    String fullImage = parseFullImage(postData);
-
-                    Post post = new Post(
-                            postData.optString("name"),
-                            postData.optString("title"),
-                            postData.optString("author"),
-                            postData.optLong("created_utc") * 1000,
-                            postData.optString("thumbnail"),
-                            fullImage,
-                            postData.optLong("num_comments"),
-                            "https://www.reddit.com" + postData.optString("permalink")
-                    );
-
-                    posts.add(post);
-                }
-            }
-        }
-        return posts;
-    }
-
-    @Nullable
-    private static String parseFullImage(JSONObject postData) {
-        String fullImage = null;
-        JSONObject preview = postData.optJSONObject("preview");
-        if (preview != null) {
-            boolean enabled = preview.optBoolean("enabled", false);
-            if (enabled) {
-                fullImage = postData.optString("url");
-            }
-//                JSONArray images = preview.optJSONArray("images");
-//                if (enabled && images.length() > 0) {
-//                    JSONObject source = images.getJSONObject(0).optJSONObject("source");
-//                    fullImage = source.optString("url");
-//                }
-        }
-        return fullImage;
-    }
 }

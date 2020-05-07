@@ -29,14 +29,14 @@ class RedditApiTest {
         assertEquals("t3_geqgdh",posts[0].name)
         assertEquals("15 years from now",posts[0].title)
         assertEquals("AwesomeAdviceBot", posts[0].author)
-        assertEquals(1588792532 * 1000L, posts[0].date)
+        assertEquals(1588792532 * 1000L, posts[0].dateInMiliseconds)
         assertEquals("https://b.thumbs.redditmedia.com/4lCajpDiKM6Qg53gLSMpraM-apNnDEhfah_a6YqcYHI.jpg", posts[0].thumbnail)
-        assertEquals("https://i.redd.it/kvb5q07e27x41.jpg", posts[0].fullImage)
+        assertEquals("https://i.redd.it/kvb5q07e27x41.jpg", posts[0].fullImageIfEnabled)
         assertEquals(1477, posts[0].commentsNumber)
-        assertEquals("https://www.reddit.com/r/memes/comments/geqgdh/15_years_from_now/", posts[0].permalink)
+        assertEquals("https://www.reddit.com/r/memes/comments/geqgdh/15_years_from_now/", posts[0].fullPermaLink)
 
         assertEquals("t3_gelw3r", posts[1].name)
-        assertNull("Full image should be null because of enabled:false", posts[1].fullImage)
+        assertNull("Full image should be null because of enabled:false", posts[1].fullImageIfEnabled)
 
         assertEquals("t3_gepkkj", posts[2].name)
         assertEquals("To attack Costco", posts[2].title)
