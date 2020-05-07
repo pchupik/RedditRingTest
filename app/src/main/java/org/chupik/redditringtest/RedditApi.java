@@ -60,7 +60,7 @@ public class RedditApi {
     }
 
     @WorkerThread
-    private void requestToken() {
+    void requestToken() {
         FormBody formBody = new FormBody.Builder()
                 .add("grant_type", "https://oauth.reddit.com/grants/installed_client")
                 .add("device_id", uuid)

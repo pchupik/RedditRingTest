@@ -3,14 +3,37 @@ package org.chupik.redditringtest
 import okhttp3.*
 import org.junit.Assert.*
 import org.junit.Test
-import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.*
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.verify
 import java.io.IOException
 import java.util.*
 import org.mockito.Mockito.`when` as whenever
 
 
 class RedditApiTest {
+
+    @Test
+    fun requestToken(){
+        val prefsMock = mock(Prefs::class.java).apply {
+            whenever(uuid).thenReturn("423e8944-908a-11ea-bb37-0242ac130002")
+        }
+        val okHttpClientMock = mockOkHttpSingleResponse("sample_token.json")
+        val api = RedditApi(prefsMock, okHttpClientMock)
+
+        api.requestToken()
+
+        verify(prefsMock).store(
+                eq("the_token"),
+                longThat { it/1000 == expiresAt(3600) / 1000 }
+        )
+    }
+
+    fun expiresAt(expiresIn : Int) : Long {
+        val instance = Calendar.getInstance()
+        instance.add(Calendar.SECOND, expiresIn)
+        return instance.timeInMillis
+    }
 
     @Test
     @Throws(IOException::class)

@@ -1,0 +1,7 @@
+{
+  "access_token": "the_token",
+  "token_type": "bearer",
+  "device_id": "423e8944-908a-11ea-bb37-0242ac130002",
+  "expires_in": 3600,
+  "scope": "*"
+}
