@@ -37,12 +37,12 @@ public class RedditApi {
     private Prefs prefs;
 
     @Inject
-    public RedditApi(Prefs prefs) {
+    public RedditApi(Prefs prefs, OkHttpClient okHttpClient) {
         this.prefs = prefs;
         this.accessToken = prefs.getToken();
         this.expiresAt = prefs.getTokenExpirationDate();
         this.uuid = prefs.getUUID();
-        okHttpClient = new OkHttpClient.Builder().build();
+        this.okHttpClient = okHttpClient;
     }
 
     private boolean isTokenValid(){
