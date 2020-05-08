@@ -27,6 +27,10 @@ class RedditApiTest {
                 eq("the_token"),
                 longThat { it/1000 == expiresAt(3600) / 1000 }
         )
+        verify(okHttpClientMock).newCall(argThat {
+            it.url().toString() == "https://www.reddit.com/api/v1/access_token"
+                    && it.body() is FormBody
+        })
     }
 
     fun expiresAt(expiresIn : Int) : Long {
